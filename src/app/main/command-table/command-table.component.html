@@ -1,1 +1,76 @@
-<p>command-table works!</p>
+<div class="keys_and_alter_keys_container">
+  <h2>Current Command</h2>
+  <button class="enter_button" mat-raised-button color="accent" (click)="pushToArray('pressAndRelease')">Enter</button>
+  <button class="enter_button" mat-raised-button color="accent" (click)="keyCombination = '' ">clear</button>
+  {{keyCombination}}
+  <div class="keys">
+    <div class="alter_keys">
+      <div *ngFor="let key of alterkeys" (click)="addToKeyCombination(key)">
+        <button mat-raised-button> {{key}} </button>
+      </div>
+    </div>
+    <div class="keyboard_keys">
+      <button
+        mat-raised-button
+        class="key"
+        *ngFor="let key of keyboardKeys"
+        (click)="addToKeyCombination(key)"
+        >
+        {{key}}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="first_container">
+  <div class="second_container">
+    <h2>Write + time</h2>
+    <mat-form-field class="example-full-width">
+      <mat-label>Write</mat-label>
+      <input
+        matInput
+        type="text"
+        name="myInput"
+        [(ngModel)]="inputValue"
+        (keyup)="$event.key === 'Enter' ? pushToArray('write') : null "
+        >
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="pushToArray('write')">Push word to list</button>
+  </div>
+  <div class="second_container">
+    <mat-form-field class="example-full-width">
+      <mat-label>TimeSleep (sec)</mat-label>
+      <input
+        matInput
+        type="number"
+        name="timeSleep"
+        [(ngModel)]="time"
+        (keyup)="$event.key === 'Enter' ? pushToArray('timeSleep') : null "
+        >
+
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="pushToArray('timeSleep')">Push wait time to list</button>
+
+  </div>
+</div>
+
+
+<div class="example-container list">
+  <h2>Done</h2>
+  <div class="button_container">
+    <button mat-raised-button color="primary" (click)="downloadFile()">Download</button>
+    <button mat-raised-button color="accent" (click)="clear()">Clear</button>
+  </div>
+
+  <div
+    cdkDropList
+    #doneList="cdkDropList"
+    [cdkDropListData]="done"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of done;let i = index" cdkDrag>
+      {{item.command}}('{{item.key}}')
+      <span (click)="deleteItem(i)" style="cursor: pointer;">X</span>
+    </div>
+  </div>
+</div>
